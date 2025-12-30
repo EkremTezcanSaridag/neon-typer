@@ -144,3 +144,14 @@ body {
     text-shadow: 0 0 5px var(--neon-pink);
     user-select: none;
 }
+
+#settings {
+    position: absolute;
+    top: 15px;
+    right: 50px;
+    color: var(--neon-blue);
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 500;
+    text-shadow: 0 0 5px var(--neon-blue);
+}

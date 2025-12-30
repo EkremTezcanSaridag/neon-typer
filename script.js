@@ -51,13 +51,16 @@ var words = [
 
 var aktifKelime = [];
 
+var scores = 0;
+var lives = 3;
+
 function getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 
 function generateRandomWord() {
-    var randomSayi = getRandomNumber(0,words.length);
+    var randomSayi = getRandomNumber(0, words.length) - 1;
 
     var secilenkelime = words[randomSayi];
 
@@ -79,16 +82,64 @@ function generateRandomWord() {
 
 setInterval(generateRandomWord, 3000);
 
-function hareket(){
-    aktifKelime.forEach(function(yeniDiv){
+function hareket() {
+    aktifKelime.forEach(function (yeniDiv, index) {
+
         var asilYükseklik = parseInt(yeniDiv.style.top) || 0;
 
-        asilYükseklik = asilYükseklik + 2;
 
+        asilYükseklik = asilYükseklik + 2;
         yeniDiv.style.top = asilYükseklik + "px";
-    })
+
+
+        if (asilYükseklik > 580) {
+            lives -= 1;
+
+
+            var canKutusu = document.getElementById("can");
+            if (canKutusu) {
+                canKutusu.innerText = lives;
+            }
+
+
+            yeniDiv.remove();
+            aktifKelime.splice(index, 1);
+
+
+            if (lives <= 0) {
+                setTimeout(function () {
+                    alert("oyun bitti");
+                    
+                    location.reload();
+                }, 100);
+            }
+        }
+    });
 }
 
-setInterval(hareket,30);
+setInterval(hareket, 30);
 
 generateRandomWord();
+
+var İnputAlani = document.getElementById("input-area");
+
+İnputAlani.addEventListener("input", function () {
+
+    var yazilanKelime = İnputAlani.value.trim();
+
+    for (var i = 0; i < aktifKelime.length; i++) {
+        if (aktifKelime[i].innerText === yazilanKelime) {
+            aktifKelime[i].remove(); // Remove the div from the DOM
+            aktifKelime.splice(i, 1); // Remove the element from the array
+            İnputAlani.value = ""; // Clear the input field
+
+            scores += 10;
+            document.getElementById("current-score").innerText = scores;
+
+
+
+            break;
+
+        }
+    }
+})
