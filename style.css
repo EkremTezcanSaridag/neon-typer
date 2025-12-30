@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+:root {
+    --bg-color: #0d0221;
+    /* Çok koyu mor/siyah */
+    --neon-blue: #00f3ff;
+    /* Tron mavisi */
+    --neon-pink: #ff0055;
+    /* Cyberpunk pembesi */
+    --text-glow: 0 0 10px var(--neon-blue);
+    /* Parlama efekti */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #000;
+    font-family: 'VT323';
+    color: #0ff;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.wrapper {
+    border: 2px solid var(--neon-blue);
+    box-shadow: 0 0 20px var(--neon-blue);
+    background-color: rgba(0, 0, 0, 0.8);
+    width: 800px;
+    height: auto;
+    border-radius: 20px;
+}
+
+.game-board {
+    position: relative;
+    overflow: hidden;
+    height: 600px;
+    background: linear-gradient(180deg, #0d0221 0%, #1a0b2e 100%);
+    border-bottom: 2px solid var(--neon-blue);
+}
+
+.game-board::before {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    background-image:
+        linear-gradient(transparent 90%, rgba(0, 243, 255, 0.2) 90%),
+        /* Yatay Çizgiler */
+        linear-gradient(90deg, transparent 90%, rgba(0, 243, 255, 0.2) 90%);
+    /* Dikey Çizgiler */
+    background-size: 50px 50px;
+    transform: perspective(500px) rotateX(45deg);
+    /* 3D Yatıklık */
+    animation: grid-move 20s linear infinite;
+    /* Hareket Animasyonu */
+    z-index: 0;
+
+
+}
+
+
+.wrapper::after {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    z-index: 10;
+    /* Her şeyin üstünde */
+    background-size: 100% 2px, 3px 100%;
+    /* Çizgi sıklığı */
+    pointer-events: none;
+    /* Tıklamayı engellemesin */
+    border-radius: 20px;
+    /* Senin wrapper radius ile aynı olsun */
+}
+
+@keyframes grid-move {
+    0% {
+        transform: perspective(500px) rotateX(45deg) translateY(0);
+    }
+
+    100% {
+        transform: perspective(500px) rotateX(45deg) translateY(50px);
+    }
+}
+
+.status {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.score {
+    color: var(--neon-blue);
+    text-shadow: 0 0 5px var(--neon-blue);
+}
+
+.lives {
+    color: var(--neon-pink);
+    text-shadow: 0 0 5px var(--neon-pink);
+}
+
+.game-board {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+#input-area {
+
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--neon-blue);
+    color: white;
+    text-transform: uppercase;
+    font-family:VT323;
+    outline: none;
+    font-size: 1.2rem;
+    text-align: center;
+    padding: 7px;
+    width: 200px;
+    letter-spacing: 1.5px;
+    text-shadow: 0 0 10px var(--neon-blue);
+
+
+
+}
+
+#input-area::placeholder {
+    color: rgba(0, 243, 255, 0.3);
+    font-size: 1.5rem;
+}
