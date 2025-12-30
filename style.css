@@ -31,7 +31,7 @@ body {
     border-radius: 20px;
 }
 
-.game-board {
+#game-board {
     position: relative;
     overflow: hidden;
     height: 600px;
@@ -39,7 +39,7 @@ body {
     border-bottom: 2px solid var(--neon-blue);
 }
 
-.game-board::before {
+#game-board::before {
     content: "";
     position: absolute;
     width: 200%;
@@ -107,7 +107,7 @@ body {
     text-shadow: 0 0 5px var(--neon-pink);
 }
 
-.game-board {
+#game-board {
     background-color: rgba(255, 255, 255, 0.05);
 }
 
@@ -134,4 +134,13 @@ body {
 #input-area::placeholder {
     color: rgba(0, 243, 255, 0.3);
     font-size: 1.5rem;
+}
+
+.kelime{
+    position: absolute;
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 0 0 5px var(--neon-pink);
+    user-select: none;
 }
