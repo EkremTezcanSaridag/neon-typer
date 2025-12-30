@@ -54,10 +54,39 @@ var aktifKelime = [];
 var scores = 0;
 var lives = 3;
 
+var fallspeed = 2;
+var İnputAlani = document.getElementById("input-area");
+var startScreen = document.getElementById("start-screen");
+var startBtn = document.getElementById("start-btn");
+startBtn.addEventListener("click", oyunuBaslat);
+
 function getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+
+function oyunuBaslat() {
+    // 1. Giriş ekranını gizle
+    startScreen.style.display = "none";
+
+    // 2. Input'a odaklan (Kullanıcı direkt yazabilsin)
+    İnputAlani.focus();
+
+    // 3. İlk kelimeyi oluştur
+    generateRandomWord();
+
+    // 4. Döngüleri Başlat (Motorları Çalıştır)
+    setInterval(generateRandomWord, 3000);
+    setInterval(hareket, 30);
+}
+
+
+// Enter tuşuna basınca da başlasın (Opsiyonel)
+window.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && startScreen.style.display !== "none") {
+        oyunuBaslat();
+    }
+});
 
 function generateRandomWord() {
     var randomSayi = getRandomNumber(0, words.length) - 1;
@@ -80,7 +109,9 @@ function generateRandomWord() {
 
 }
 
-setInterval(generateRandomWord, 3000);
+
+
+
 
 function hareket() {
     aktifKelime.forEach(function (yeniDiv, index) {
@@ -88,7 +119,7 @@ function hareket() {
         var asilYükseklik = parseInt(yeniDiv.style.top) || 0;
 
 
-        asilYükseklik = asilYükseklik + 2;
+        asilYükseklik = asilYükseklik + fallspeed;
         yeniDiv.style.top = asilYükseklik + "px";
 
 
@@ -105,23 +136,27 @@ function hareket() {
             yeniDiv.remove();
             aktifKelime.splice(index, 1);
 
-
             if (lives <= 0) {
+                // 1. Önce sesi çal (ID'ye dikkat: gameover-sound)
+                var gameoverAudio = document.getElementById("gameover");
+                if (gameoverAudio) {
+                    gameoverAudio.play().catch(e => console.log("Ses hatası:", e));
+                }
+
+                // 2. Alert ve Yenilemeyi GECİKTİR (Ses duyulsun diye)
                 setTimeout(function () {
-                    alert("oyun bitti");
-                    
+                    alert("OYUN BİTTİ! Skorun: " + scores);
                     location.reload();
-                }, 100);
+                }, 500); // 500ms bekle sonra yenile
             }
         }
     });
 }
 
-setInterval(hareket, 30);
 
-generateRandomWord();
 
-var İnputAlani = document.getElementById("input-area");
+
+
 
 İnputAlani.addEventListener("input", function () {
 
@@ -135,6 +170,14 @@ var İnputAlani = document.getElementById("input-area");
 
             scores += 10;
             document.getElementById("current-score").innerText = scores;
+            var vurmeefekti = document.getElementById("shoot");
+            vurmeefekti.currentTime = 0;
+            vurmeefekti.play();
+
+
+            if (scores % 50 === 0) {
+                fallspeed += 2;
+            }
 
 
 
