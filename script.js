@@ -110,6 +110,23 @@ function generateRandomWord() {
 }
 
 
+function cankismi(){
+        var cankutusu = document.getElementById("can")
+
+        cankutusu.innerHTML = "";
+
+
+        for (var i = 0; i < lives; i++) {
+           var yenikalp =   document.createElement("span");
+              yenikalp.classList.add("heart");
+              yenikalp.innerText = "❤️";
+              cankutusu.appendChild(yenikalp);
+        }
+}
+
+
+cankismi();
+
 
 
 
@@ -125,16 +142,25 @@ function hareket() {
 
         if (asilYükseklik > 580) {
             lives -= 1;
+            cankismi();
+
+            var düsses = new Audio('/sounds/fallsound.mp3')
+
+            düsses.play().catch(e => console.log("ses hatası:",e))
 
 
-            var canKutusu = document.getElementById("can");
-            if (canKutusu) {
-                canKutusu.innerText = lives;
-            }
+            // var canKutusu = document.getElementById("can");
+            // if (canKutusu) {
+            //     canKutusu.innerText = lives;
+            // }
+
 
 
             yeniDiv.remove();
             aktifKelime.splice(index, 1);
+
+
+            
 
             if (lives <= 0) {
                 // 1. Önce sesi çal (ID'ye dikkat: gameover-sound)

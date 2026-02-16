@@ -1,16 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
-
 :root {
-    --bg-color: #0d0221;
-    /* Çok koyu mor/siyah */
-    --neon-blue: #00f3ff;
-    /* Tron mavisi */
-    --neon-pink: #ff0055;
-    /* Cyberpunk pembesi */
+    --bg-color: #12001f; /* Çok koyu mor arka plan */
+    
+    /* Cyber Sarı (Mavi yerine bunu kullan) */
+    --neon-blue: #fce803; 
+    
+    /* Tok Mor/Pembe */
+    --neon-pink: #d900ff; 
+    
     --text-glow: 0 0 10px var(--neon-blue);
-    /* Parlama efekti */
 }
-
 body {
     margin: 0;
     padding: 0;
@@ -100,11 +99,51 @@ body {
 .score {
     color: var(--neon-blue);
     text-shadow: 0 0 5px var(--neon-blue);
+    font-size: 20px;
+    position: relative;
+    left: 60px;
+    top: 20px;
 }
 
 .lives {
     color: var(--neon-pink);
     text-shadow: 0 0 5px var(--neon-pink);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    position: relative;
+    right: 60px;
+    top: 40px;
+}
+/* --- BUNU MUTLAKA EKLEMEN LAZIM --- */
+@keyframes kalpAtisi {
+    0% {
+        transform: scale(1); /* Başlangıç: Normal boyut */
+    }
+    50% {
+        transform: scale(1.3); /* Ortada: %30 büyü (PUM!) */
+    }
+    100% {
+        transform: scale(1); /* Bitiş: Tekrar normal boyut (ÇIK) */
+    }
+}
+
+
+
+
+.heart {
+    color: #ff0055;
+    /* Neon Pembe/Kırmızı */
+    font-size: 20px;
+    /* Biraz büyük olsun */
+    text-shadow: 0 0 10px #ff0055, 0 0 20px #ff0055;
+    /* IŞIL IŞIL PARLASIN */
+    margin-right: 5px;
+    /* Kalpler birbirine yapışmasın */
+
+    display: inline-block;
+    animation: kalpAtisi 1s infinite;
+
 }
 
 #game-board {
@@ -138,11 +177,24 @@ body {
 
 .kelime {
     position: absolute;
-    color: #fff;
+    color: #000;
     font-size: 24px;
     font-weight: bold;
     text-shadow: 0 0 5px var(--neon-pink);
     user-select: none;
+
+
+    border: 2px solid var(--neon-blue);
+    padding: 5px 10px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 10px var(--neon-blue);
+
+    text-shadow: 0 0 5px #fff, 0 0 10px var(--neon-blue); /* Yazı parlasın */
+    box-shadow: 0 0 15px var(--neon-blue), inset 0 0 10px var(--neon-blue); /* Kutu parlasın */
+    
+    user-select: none;
+    z-index: 100; /* Izgaranın üstünde görünsün */
 }
 
 #settings {
