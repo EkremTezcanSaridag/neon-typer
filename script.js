@@ -146,7 +146,7 @@ function hareket() {
 
             var düsses = new Audio('/sounds/fallsound.mp3')
 
-            düsses.play().catch(e => console.log("ses hatası:",e))
+          playSes(düsses)
 
 
             // var canKutusu = document.getElementById("can");
@@ -166,7 +166,7 @@ function hareket() {
                 // 1. Önce sesi çal (ID'ye dikkat: gameover-sound)
                 var gameoverAudio = document.getElementById("gameover");
                 if (gameoverAudio) {
-                    gameoverAudio.play().catch(e => console.log("Ses hatası:", e));
+                    playSes(gameoverAudio);
                 }
 
                 // 2. Alert ve Yenilemeyi GECİKTİR (Ses duyulsun diye)
@@ -197,8 +197,7 @@ function hareket() {
             scores += 10;
             document.getElementById("current-score").innerText = scores;
             var vurmeefekti = document.getElementById("shoot");
-            vurmeefekti.currentTime = 0;
-            vurmeefekti.play();
+            playSes(vurmeefekti)
 
 
             if (scores % 50 === 0) {
@@ -212,3 +211,54 @@ function hareket() {
         }
     }
 })
+
+
+// ---- AYARLAR ----
+var soundEnabled = true;
+var settingsOpen = false;
+
+var settingsIcon = document.querySelector("#settings i");
+var settingsPanel = document.querySelector(".settingspanel");
+var soundToggle = document.querySelector(".sound-toggle");
+var diffBtns = document.querySelectorAll(".farklibut");
+
+// Panel aç/kapat
+settingsIcon.addEventListener("click", function () {
+    settingsOpen = !settingsOpen;
+    settingsPanel.style.display = settingsOpen ? "block" : "none";
+    settingsIcon.classList.toggle("open", settingsOpen);
+});
+
+// Panel dışına tıklayınca kapat
+document.addEventListener("click", function (e) {
+    if (settingsOpen && !settingsPanel.contains(e.target) && !e.target.closest("#settings")) {
+        settingsOpen = false;
+        settingsPanel.style.display = "none";
+        settingsIcon.classList.remove("open");
+    }
+});
+
+// Zorluk butonları
+diffBtns.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+        diffBtns.forEach(function (b) { b.classList.remove("active"); });
+        btn.classList.add("active");
+        fallspeed = parseInt(btn.dataset.speed);
+    });
+});
+
+// Ses toggle
+soundToggle.addEventListener("click", function () {
+    soundEnabled = !soundEnabled;
+    soundToggle.classList.toggle("muted", !soundEnabled);
+    soundToggle.innerHTML = soundEnabled
+        ? '<i class="fa-solid fa-volume-high"></i>'
+        : '<i class="fa-solid fa-volume-xmark"></i>';
+});
+
+// Ses çalma fonksiyonu
+function playSes(audioEl) {
+    if (!soundEnabled) return;
+    audioEl.currentTime = 0;
+    audioEl.play().catch(e => console.log("ses hatası:", e));
+}
