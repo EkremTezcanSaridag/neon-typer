@@ -155,6 +155,7 @@ function hareket() {
 
             playSes(düsses)
 
+            İnputAlani.value = "";
 
             // var canKutusu = document.getElementById("can");
             // if (canKutusu) {
