@@ -144,31 +144,33 @@ function hareket() {
         if (asilYükseklik > 580) {
             if (!yeniDiv.classList.contains("bomba")) {
                 lives -= 1;
+                cankismi();
+
+                if (kombo > 0) {
+                    komboMesajiGoster("💔 KOMBO BOZULDU!");
+                }
+                kombo = 0;
+                document.getElementById("current-combo").innerText = kombo;
+
+                var gameBoard = document.getElementById("game-board");
+                gameBoard.classList.add("shake");
+                setTimeout(function () {
+                    gameBoard.classList.remove("shake");
+                }, 400);
+
+                var düsses = new Audio('sounds/fallsound.mp3');
+                playSes(düsses);
+
+                İnputAlani.value = "";
+
+                if (lives <= 0) {
+                    oyunBitti();
+                }
             }
-            cankismi();
 
-            if (kombo > 0) {
-                komboMesajiGoster("💔 KOMBO BOZULDU!");
-            }
-            kombo = 0;
-            document.getElementById("current-combo").innerText = kombo;
-
-            var gameBoard = document.getElementById("game-board");
-            gameBoard.classList.add("shake");
-            setTimeout(function () {
-                gameBoard.classList.remove("shake");
-            }, 400);
-
-            var düsses = new Audio('sounds/fallsound.mp3');
-            playSes(düsses);
-
-            İnputAlani.value = "";
             yeniDiv.remove();
             aktifKelime.splice(index, 1);
-
-            if (lives <= 0) {
-                oyunBitti();
-            }
+            İnputAlani.value = "";
         }
     });
 }
