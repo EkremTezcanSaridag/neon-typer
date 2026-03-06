@@ -1,15 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
 :root {
-    --bg-color: #12001f; /* Çok koyu mor arka plan */
-    
+    --bg-color: #12001f;
+    /* Çok koyu mor arka plan */
+
     /* Cyber Sarı (Mavi yerine bunu kullan) */
-    --neon-blue: #fce803; 
-    
+    --neon-blue: #fce803;
+
     /* Tok Mor/Pembe */
-    --neon-pink: #d900ff; 
-    
+    --neon-pink: #d900ff;
+
     --text-glow: 0 0 10px var(--neon-blue);
 }
+
 body {
     margin: 0;
     padding: 0;
@@ -115,16 +118,22 @@ body {
     right: 60px;
     top: 40px;
 }
+
 /* --- BUNU MUTLAKA EKLEMEN LAZIM --- */
 @keyframes kalpAtisi {
     0% {
-        transform: scale(1); /* Başlangıç: Normal boyut */
+        transform: scale(1);
+        /* Başlangıç: Normal boyut */
     }
+
     50% {
-        transform: scale(1.3); /* Ortada: %30 büyü (PUM!) */
+        transform: scale(1.3);
+        /* Ortada: %30 büyü (PUM!) */
     }
+
     100% {
-        transform: scale(1); /* Bitiş: Tekrar normal boyut (ÇIK) */
+        transform: scale(1);
+        /* Bitiş: Tekrar normal boyut (ÇIK) */
     }
 }
 
@@ -175,27 +184,46 @@ body {
     font-size: 1.5rem;
 }
 
+
+
+
 .kelime {
     position: absolute;
-    color: #000;
-    font-size: 24px;
-    font-weight: bold;
-    text-shadow: 0 0 5px var(--neon-pink);
+    font-size: 22px;
+    font-family: 'VT323', monospace;
+    font-weight: normal;
+    color: #ff2a2a;
     user-select: none;
+    z-index: 100;
 
+    padding: 6px 16px;
+    border-radius: 4px;
 
-    border: 2px solid var(--neon-blue);
-    padding: 5px 10px;
-    border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.5);
-    box-shadow: 0 0 10px var(--neon-blue);
+    /* Solid siyah, kırmızı kenarlık */
+    background: #0a0a0a;
+    border: 2px solid #ff2a2a;
+    box-shadow:
+        0 0 10px #ff2a2a,
+        4px 4px 0px #7a0000;
+    text-shadow: 0 0 8px #ff2a2a;
 
-    text-shadow: 0 0 5px #fff, 0 0 10px var(--neon-blue); /* Yazı parlasın */
-    box-shadow: 0 0 15px var(--neon-blue), inset 0 0 10px var(--neon-blue); /* Kutu parlasın */
-    
-    user-select: none;
-    z-index: 100; /* Izgaranın üstünde görünsün */
+    animation: kanParlama 1.5s ease-in-out infinite alternate;
 }
+
+@keyframes kanParlama {
+    from {
+        box-shadow: 4px 4px 0px #7a0000, 0 0 8px #ff2a2a;
+        border-color: #ff2a2a;
+    }
+
+    to {
+        box-shadow: 4px 4px 0px #7a0000, 0 0 20px #ff0000, 0 0 40px #aa0000;
+        border-color: #ff6666;
+    }
+}
+
+
+
 
 
 
@@ -302,14 +330,14 @@ body {
     letter-spacing: 2px;
 }
 
-.farklizorluk{
+.farklizorluk {
     display: flex;
     justify-content: space-evenly;
     margin-top: 5px;
     margin-bottom: 5px;
 }
 
-.farklibut{
+.farklibut {
     background: transparent;
     border: 1px solid var(--neon-blue);
     color: var(--neon-blue);
@@ -365,4 +393,35 @@ body {
     border-color: #555;
     color: #555;
     text-shadow: none;
+}
+
+
+@keyframes screenShake {
+    0% {
+        transform: translate(0 , 0);
+    }
+
+    20% {
+        transform: translate(-6px,4px);
+    }
+
+    40% {
+        transform: translate(6px , -4px);
+    }
+
+    60% {
+        transform: translate(-4px,6px);
+    }
+
+    80% {
+        transform: translate(4px , -2px);
+    }
+
+    100% {
+        transform: translate(0,0);
+    }
+}
+
+.shake {
+    animation: screenShake 0.4s ease;
 }

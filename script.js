@@ -110,18 +110,18 @@ function generateRandomWord() {
 }
 
 
-function cankismi(){
-        var cankutusu = document.getElementById("can")
+function cankismi() {
+    var cankutusu = document.getElementById("can")
 
-        cankutusu.innerHTML = "";
+    cankutusu.innerHTML = "";
 
 
-        for (var i = 0; i < lives; i++) {
-           var yenikalp =   document.createElement("span");
-              yenikalp.classList.add("heart");
-              yenikalp.innerText = "❤️";
-              cankutusu.appendChild(yenikalp);
-        }
+    for (var i = 0; i < lives; i++) {
+        var yenikalp = document.createElement("span");
+        yenikalp.classList.add("heart");
+        yenikalp.innerText = "❤️";
+        cankutusu.appendChild(yenikalp);
+    }
 }
 
 
@@ -144,9 +144,16 @@ function hareket() {
             lives -= 1;
             cankismi();
 
+
+            var gameBoard = document.getElementById("game-board");
+            gameBoard.classList.add("shake");
+            setTimeout(function () {
+                gameBoard.classList.remove("shake");
+            }, 400);
+
             var düsses = new Audio('/sounds/fallsound.mp3')
 
-          playSes(düsses)
+            playSes(düsses)
 
 
             // var canKutusu = document.getElementById("can");
@@ -160,7 +167,7 @@ function hareket() {
             aktifKelime.splice(index, 1);
 
 
-            
+
 
             if (lives <= 0) {
                 // 1. Önce sesi çal (ID'ye dikkat: gameover-sound)
