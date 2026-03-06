@@ -1,3 +1,6 @@
+var kelimeinterval;
+var hareketinterval;
+
 var words = [
     "ev", "elma", "evet", "araba", "masa", "kitap", "kalem", "defter", "bilgisayar", "telefon",
     "bardak", "sandalye", "kapı", "pencere", "oda", "mutfak", "banyo", "yatak", "koltuk", "sehpa",
@@ -50,11 +53,10 @@ var words = [
 ];
 
 var aktifKelime = [];
-
 var scores = 0;
 var lives = 3;
-
 var fallspeed = 2;
+
 var İnputAlani = document.getElementById("input-area");
 var startScreen = document.getElementById("start-screen");
 var startBtn = document.getElementById("start-btn");
@@ -64,24 +66,14 @@ function getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-
 function oyunuBaslat() {
-    // 1. Giriş ekranını gizle
     startScreen.style.display = "none";
-
-    // 2. Input'a odaklan (Kullanıcı direkt yazabilsin)
     İnputAlani.focus();
-
-    // 3. İlk kelimeyi oluştur
     generateRandomWord();
-
-    // 4. Döngüleri Başlat (Motorları Çalıştır)
-    setInterval(generateRandomWord, 3000);
-    setInterval(hareket, 30);
+    kelimeinterval = setInterval(generateRandomWord, 3000);
+    hareketinterval = setInterval(hareket, 30);
 }
 
-
-// Enter tuşuna basınca da başlasın (Opsiyonel)
 window.addEventListener("keydown", function (e) {
     if (e.key === "Enter" && startScreen.style.display !== "none") {
         oyunuBaslat();
@@ -90,32 +82,20 @@ window.addEventListener("keydown", function (e) {
 
 function generateRandomWord() {
     var randomSayi = getRandomNumber(0, words.length) - 1;
-
     var secilenkelime = words[randomSayi];
-
     const yeniDiv = document.createElement("div");
-
     yeniDiv.innerText = secilenkelime;
-    yeniDiv.classList.add("kelime");// css'de stil vermek için bunu ekliyoruz 
-
+    yeniDiv.classList.add("kelime");
     yeniDiv.style.left = getRandomNumber(0, 500) + "px";
-
-    yeniDiv.style.top = "0px"
-
+    yeniDiv.style.top = "0px";
     var gameBoard = document.getElementById("game-board");
     gameBoard.appendChild(yeniDiv);
     aktifKelime.push(yeniDiv);
-
-
 }
 
-
 function cankismi() {
-    var cankutusu = document.getElementById("can")
-
+    var cankutusu = document.getElementById("can");
     cankutusu.innerHTML = "";
-
-
     for (var i = 0; i < lives; i++) {
         var yenikalp = document.createElement("span");
         yenikalp.classList.add("heart");
@@ -124,26 +104,39 @@ function cankismi() {
     }
 }
 
-
 cankismi();
 
+function oyunBitti() {
+    clearInterval(kelimeinterval);
+    clearInterval(hareketinterval);
+
+    var gameoverAudio = document.getElementById("gameover");
+    if (gameoverAudio) {
+        playSes(gameoverAudio);
+    }
 
 
+
+    setTimeout(function () {
+        var gameoverScreen = document.querySelector(".gameoverscreen");
+        gameoverScreen.style.display = "flex";
+        document.getElementById("final-score").innerText = scores;
+        document.querySelector(".score").style.display = "none";
+        document.getElementById("restart-btn").addEventListener("click", function () {
+            location.reload();
+        });
+    }, 300);
+}
 
 function hareket() {
     aktifKelime.forEach(function (yeniDiv, index) {
-
         var asilYükseklik = parseInt(yeniDiv.style.top) || 0;
-
-
         asilYükseklik = asilYükseklik + fallspeed;
         yeniDiv.style.top = asilYükseklik + "px";
-
 
         if (asilYükseklik > 580) {
             lives -= 1;
             cankismi();
-
 
             var gameBoard = document.getElementById("game-board");
             gameBoard.classList.add("shake");
@@ -151,75 +144,49 @@ function hareket() {
                 gameBoard.classList.remove("shake");
             }, 400);
 
-            var düsses = new Audio('/sounds/fallsound.mp3')
-
-            playSes(düsses)
+            var düsses = new Audio('sounds/fallsound.mp3');
+            playSes(düsses);
 
             İnputAlani.value = "";
-
-            // var canKutusu = document.getElementById("can");
-            // if (canKutusu) {
-            //     canKutusu.innerText = lives;
-            // }
-
-
-
             yeniDiv.remove();
             aktifKelime.splice(index, 1);
 
-
-
-
             if (lives <= 0) {
-                // 1. Önce sesi çal (ID'ye dikkat: gameover-sound)
-                var gameoverAudio = document.getElementById("gameover");
-                if (gameoverAudio) {
-                    playSes(gameoverAudio);
-                }
-
-                // 2. Alert ve Yenilemeyi GECİKTİR (Ses duyulsun diye)
-                setTimeout(function () {
-                    alert("OYUN BİTTİ! Skorun: " + scores);
-                    location.reload();
-                }, 500); // 500ms bekle sonra yenile
+                oyunBitti();
             }
         }
     });
 }
 
-
-
-
-
-
 İnputAlani.addEventListener("input", function () {
-
     var yazilanKelime = İnputAlani.value.trim();
 
     for (var i = 0; i < aktifKelime.length; i++) {
         if (aktifKelime[i].innerText === yazilanKelime) {
-            aktifKelime[i].remove(); // Remove the div from the DOM
-            aktifKelime.splice(i, 1); // Remove the element from the array
-            İnputAlani.value = ""; // Clear the input field
+            var rect = aktifKelime[i].getBoundingClientRect();
+            var boardRect = document.getElementById("game-board").getBoundingClientRect();
+            var x = rect.left - boardRect.left + rect.width / 2;
+            var y = rect.top - boardRect.top + rect.height / 2;
+            particleEfekti(x, y);
+
+            aktifKelime[i].remove();
+            aktifKelime.splice(i, 1);
+            İnputAlani.value = "";
 
             scores += 10;
             document.getElementById("current-score").innerText = scores;
-            var vurmeefekti = document.getElementById("shoot");
-            playSes(vurmeefekti)
 
+            var vurmeefekti = document.getElementById("shoot");
+            playSes(vurmeefekti);
 
             if (scores % 50 === 0) {
                 fallspeed += 2;
             }
 
-
-
             break;
-
         }
     }
-})
-
+});
 
 // ---- AYARLAR ----
 var soundEnabled = true;
@@ -230,14 +197,12 @@ var settingsPanel = document.querySelector(".settingspanel");
 var soundToggle = document.querySelector(".sound-toggle");
 var diffBtns = document.querySelectorAll(".farklibut");
 
-// Panel aç/kapat
 settingsIcon.addEventListener("click", function () {
     settingsOpen = !settingsOpen;
     settingsPanel.style.display = settingsOpen ? "block" : "none";
     settingsIcon.classList.toggle("open", settingsOpen);
 });
 
-// Panel dışına tıklayınca kapat
 document.addEventListener("click", function (e) {
     if (settingsOpen && !settingsPanel.contains(e.target) && !e.target.closest("#settings")) {
         settingsOpen = false;
@@ -246,7 +211,6 @@ document.addEventListener("click", function (e) {
     }
 });
 
-// Zorluk butonları
 diffBtns.forEach(function (btn) {
     btn.addEventListener("click", function () {
         diffBtns.forEach(function (b) { b.classList.remove("active"); });
@@ -255,7 +219,6 @@ diffBtns.forEach(function (btn) {
     });
 });
 
-// Ses toggle
 soundToggle.addEventListener("click", function () {
     soundEnabled = !soundEnabled;
     soundToggle.classList.toggle("muted", !soundEnabled);
@@ -264,9 +227,31 @@ soundToggle.addEventListener("click", function () {
         : '<i class="fa-solid fa-volume-xmark"></i>';
 });
 
-// Ses çalma fonksiyonu
 function playSes(audioEl) {
     if (!soundEnabled) return;
     audioEl.currentTime = 0;
     audioEl.play().catch(e => console.log("ses hatası:", e));
+}
+
+function particleEfekti(x, y) {
+    for (var i = 0; i < 12; i++) {
+        var parcacik = document.createElement("div");
+        parcacik.classList.add("parcacik");
+
+        var angle = Math.random() * 360;
+        var distance = Math.random() * 80 + 30;
+        var dx = Math.cos(angle) * distance;
+        var dy = Math.sin(angle) * distance;
+
+        parcacik.style.left = x + "px";
+        parcacik.style.top = y + "px";
+        parcacik.style.setProperty("--dx", dx + "px");
+        parcacik.style.setProperty("--dy", dy + "px");
+
+        document.getElementById("game-board").appendChild(parcacik);
+
+        setTimeout(function () {
+            parcacik.remove();
+        }, 600);
+    }
 }

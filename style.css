@@ -425,3 +425,71 @@ body {
 .shake {
     animation: screenShake 0.4s ease;
 }
+
+
+.parcacik {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ff2a2a;
+    box-shadow: 0 0 6px #ff2a2a;
+    pointer-events: none;
+    z-index: 999;
+    animation: parcacikUc 0.6s ease-out forwards;
+}
+
+@keyframes parcacikUc {
+    0%   { transform: translate(0, 0); opacity: 1; }
+    100% { transform: translate(var(--dx), var(--dy)); opacity: 0; }
+}
+
+
+.gameoverscreen {
+    display: none;
+    background: rgba(0, 0, 0, 0.92);
+    z-index: 99999;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.gameoverscreen h1 {
+    font-size: 64px;
+    color: #ff2a2a;
+    text-shadow: 0 0 20px #ff2a2a, 0 0 40px #ff0000;
+    margin-bottom: 10px;
+    letter-spacing: 4px;
+}
+
+.gameoverscreen p {
+    font-size: 28px;
+    color: var(--neon-blue);
+    text-shadow: 0 0 10px var(--neon-blue);
+    margin-bottom: 30px;
+}
+
+.gameoverscreen #restart-btn {
+    padding: 15px 40px;
+    font-size: 26px;
+    font-family: 'VT323', monospace;
+    background: transparent;
+    color: #ff2a2a;
+    border: 2px solid #ff2a2a;
+    cursor: pointer;
+    box-shadow: 0 0 10px #ff2a2a;
+    border-radius: 6px;
+    transition: 0.3s;
+    letter-spacing: 2px;
+}
+
+.gameoverscreen #restart-btn:hover {
+    background: #ff2a2a;
+    color: black;
+    box-shadow: 0 0 30px #ff2a2a;
+}
