@@ -45,7 +45,7 @@ Bu projede **hiçbir kütüphane veya framework (React, Vue, jQuery vb.) kullan�
 Proje statik dosyalardan oluştuğu için herhangi bir derleyiciye ihtiyaç duymaz.
 ```bash
 # Repoyu klonla
-git clone https://github.com/kullaniciadi/neon-typer.git
+git clone https://github.com/EkremTezcanSaridag/neon-typer.git
 
 # Klasöre gir
 cd neon-typer
