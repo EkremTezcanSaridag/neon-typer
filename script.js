@@ -1,6 +1,9 @@
 var kelimeinterval;
 var hareketinterval;
 
+var kombo = 0;
+var maxCombo = 0;
+
 var words = [
     "ev", "elma", "evet", "araba", "masa", "kitap", "kalem", "defter", "bilgisayar", "telefon",
     "bardak", "sandalye", "kapı", "pencere", "oda", "mutfak", "banyo", "yatak", "koltuk", "sehpa",
@@ -84,10 +87,18 @@ function generateRandomWord() {
     var randomSayi = getRandomNumber(0, words.length) - 1;
     var secilenkelime = words[randomSayi];
     const yeniDiv = document.createElement("div");
-    yeniDiv.innerText = secilenkelime;
     yeniDiv.classList.add("kelime");
     yeniDiv.style.left = getRandomNumber(0, 500) + "px";
     yeniDiv.style.top = "0px";
+    yeniDiv.dataset.kelime = secilenkelime;
+
+    if (Math.random() < 0.2) {
+        yeniDiv.classList.add("bomba");
+        yeniDiv.innerText = "💣 " + secilenkelime;
+    } else {
+        yeniDiv.innerText = secilenkelime;
+    }
+
     var gameBoard = document.getElementById("game-board");
     gameBoard.appendChild(yeniDiv);
     aktifKelime.push(yeniDiv);
@@ -111,17 +122,13 @@ function oyunBitti() {
     clearInterval(hareketinterval);
 
     var gameoverAudio = document.getElementById("gameover");
-    if (gameoverAudio) {
-        playSes(gameoverAudio);
-    }
-
-
+    if (gameoverAudio) playSes(gameoverAudio);
 
     setTimeout(function () {
         var gameoverScreen = document.querySelector(".gameoverscreen");
         gameoverScreen.style.display = "flex";
         document.getElementById("final-score").innerText = scores;
-        document.querySelector(".score").style.display = "none";
+        document.querySelector(".status").style.display = "none";
         document.getElementById("restart-btn").addEventListener("click", function () {
             location.reload();
         });
@@ -135,8 +142,16 @@ function hareket() {
         yeniDiv.style.top = asilYükseklik + "px";
 
         if (asilYükseklik > 580) {
-            lives -= 1;
+            if (!yeniDiv.classList.contains("bomba")) {
+                lives -= 1;
+            }
             cankismi();
+
+            if (kombo > 0) {
+                komboMesajiGoster("💔 KOMBO BOZULDU!");
+            }
+            kombo = 0;
+            document.getElementById("current-combo").innerText = kombo;
 
             var gameBoard = document.getElementById("game-board");
             gameBoard.classList.add("shake");
@@ -162,26 +177,57 @@ function hareket() {
     var yazilanKelime = İnputAlani.value.trim();
 
     for (var i = 0; i < aktifKelime.length; i++) {
-        if (aktifKelime[i].innerText === yazilanKelime) {
+        var kontrolKelime = aktifKelime[i].dataset.kelime || aktifKelime[i].innerText;
+
+        if (kontrolKelime === yazilanKelime) {
             var rect = aktifKelime[i].getBoundingClientRect();
             var boardRect = document.getElementById("game-board").getBoundingClientRect();
             var x = rect.left - boardRect.left + rect.width / 2;
             var y = rect.top - boardRect.top + rect.height / 2;
-            particleEfekti(x, y);
 
+            var bombaMi = aktifKelime[i].classList.contains("bomba");
+
+            particleEfekti(x, y);
             aktifKelime[i].remove();
             aktifKelime.splice(i, 1);
             İnputAlani.value = "";
 
-            scores += 10;
+            if (bombaMi) {
+                lives -= 1;
+                cankismi();
+                scores = Math.max(0, scores - 20);
+                kombo = 0;
+                document.getElementById("current-combo").innerText = kombo;
+                document.getElementById("current-score").innerText = scores;
+                komboMesajiGoster("💣 BOMBA PATLADI! -20 PUAN!");
+
+                var gameBoard = document.getElementById("game-board");
+                gameBoard.classList.add("shake");
+                setTimeout(function () { gameBoard.classList.remove("shake"); }, 400);
+
+                if (lives <= 0) oyunBitti();
+                break;
+            }
+
+            var kombocarpan = 1;
+            if (kombo >= 5) kombocarpan = 2;
+            else if (kombo >= 3) kombocarpan = 1.5;
+
+            kombo += 1;
+
+            if (kombo === 3) komboMesajiGoster("🔥 KOMBO x3!");
+            else if (kombo === 5) komboMesajiGoster("⚡ KOMBO x5! 2X PUAN!");
+
+            scores += Math.floor(10 * kombocarpan);
+
+            document.getElementById("current-combo").innerText = kombo;
+            if (kombo > maxCombo) maxCombo = kombo;
             document.getElementById("current-score").innerText = scores;
 
             var vurmeefekti = document.getElementById("shoot");
             playSes(vurmeefekti);
 
-            if (scores % 50 === 0) {
-                fallspeed += 2;
-            }
+            if (scores % 50 === 0) fallspeed += 2;
 
             break;
         }
@@ -254,4 +300,14 @@ function particleEfekti(x, y) {
             parcacik.remove();
         }, 600);
     }
+}
+
+function komboMesajiGoster(mesaj) {
+    var div = document.createElement("div");
+    div.classList.add("kombo-mesaj");
+    div.innerText = mesaj;
+    document.getElementById("game-board").appendChild(div);
+    setTimeout(function () {
+        div.remove();
+    }, 1500);
 }
