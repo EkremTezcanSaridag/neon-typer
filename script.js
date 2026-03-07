@@ -55,10 +55,28 @@ function getRandomNumber(min, max) {
 
 function oyunuBaslat() {
     startScreen.style.display = "none";
-    İnputAlani.focus();
-    generateRandomWord();
-    kelimeinterval = setInterval(generateRandomWord, spawnHizi);
-    hareketinterval = setInterval(hareket, 30);
+    var sayac = 3;
+    var countdownDiv = document.getElementById("countdown");
+    var countdownSayi = document.getElementById("countdown-sayi");
+    countdownDiv.style.display = "block";
+    countdownSayi.innerText = sayac;
+
+    var countdownInterval = setInterval(function () {
+        sayac -= 1;
+        if (sayac > 0) {
+            countdownSayi.innerText = sayac;
+            countdownDiv.classList.remove("countdown-animate");
+            void countdownDiv.offsetWidth; // reflow trick
+            countdownDiv.classList.add("countdown-animate");
+        } else {
+            countdownDiv.style.display = "none";
+            clearInterval(countdownInterval);
+            İnputAlani.focus();
+            generateRandomWord();
+            kelimeinterval = setInterval(generateRandomWord, spawnHizi);
+            hareketinterval = setInterval(hareket, 30);
+        }
+    }, 1000);
 }
 
 window.addEventListener("keydown", function (e) {
@@ -339,3 +357,5 @@ function komboMesajiGoster(mesaj) {
         div.remove();
     }, 1500);
 }
+
+console.log("Neon Typer - Script yüklendi.");
