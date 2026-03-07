@@ -3,6 +3,9 @@ var hareketinterval;
 
 var kombo = 0;
 var maxCombo = 0;
+var sonHizArtisi = 0;
+var spawnHizi = 3000;
+var maxCan = 5;
 
 var words = [
     "ev", "elma", "evet", "araba", "masa", "kitap", "kalem", "defter", "bilgisayar", "telefon",
@@ -11,48 +14,29 @@ var words = [
     "elbise", "pantolon", "gömlek", "tişört", "ayakkabı", "çorap", "kemer", "atkı", "eldiven", "şemsiye",
     "tabak", "çatal", "kaşık", "bıçak", "tencere", "tava", "fırın", "buzdolabı", "çamaşır", "bulaşık",
     "sabun", "şampuan", "diş", "fırça", "macun", "havlu", "tuvalet", "kağıt", "çöp", "kova",
-    "süpürge", "faraş", "deterjan", "bez", "kova", "pas", "paspas", "ütü", "ütü", "masası",
-    "çamaşır", "makinesi", "bulaşık", "makinesi", "kurutma", "makinesi", "elektrik", "süpürgesi", "mikrodalga", "fırın",
-    "tost", "makinesi", "çay", "makinesi", "kahve", "makinesi", "blender", "robot", "süpürge", "drone", "kamera",
+    "süpürge", "faraş", "deterjan", "bez", "pas", "paspas", "ütü", "mikrodalga", "kamera",
     "hoparlör", "kulaklık", "fare", "klavye", "monitör", "yazıcı", "tarayıcı", "projektör", "modem", "router",
-    "harddisk", "usb", "bellek", "hafıza", "kartı", "pil", "şarj", "cihazı", "adaptör", "kablo",
-    "uzatma", "kablosu", "priz", "anahtar", "sigorta", "ampul", "led", "ışık", "fener", "mum",
-    "kibrit", "çakmak", "gazete", "dergi", "roman", "hikaye", "şiir", "mektup", "zarf", "pul",
-    "kartpostal", "fotoğraf", "resim", "tablo", "heykel", "vazo", "çiçek", "bitki", "saksı", "toprak",
-    "su", "hava", "güneş", "ay", "yıldız", "bulut", "yağmur", "kar", "dolu", "rüzgar",
-    "şimşek", "gökkuşağı", "deniz", "göl", "nehir", "dağ", "orman", "ağaç", "yaprak", "çimen",
-    "taş", "kaya", "kum", "toprak", "çamur", "yol", "cadde", "sokak", "meydan", "park",
-    "bahçe", "tarla", "çiftlik", "köy", "şehir", "kasaba", "ülke", "kıta", "dünya", "evren",
-    "insan", "kadın", "erkek", "çocuk", "bebek", "aile", "anne", "baba", "kardeş", "abi",
-    "abla", "dede", "nine", "torun", "akraba", "arkadaş", "komşu", "öğrenci", "öğretmen", "doktor",
-    "hemşire", "mühendis", "mimar", "işçi", "memur", "sanatçı", "sporcu", "şarkıcı", "oyuncu", "yazar",
-    "gazeteci", "polis", "asker", "itfaiyeci", "pilot", "kaptan", "aşçı", "garson", "berber", "kuaför",
-    "terzi", "ayakkabıcı", "tamirci", "temizlikçi", "bahçıvan", "çoban", "balıkçı", "avcı", "çiftçi", "madenci",
-    "bankacı", "muhasebeci", "avukat", "hakim", "savcı", "noter", "eczacı", "veteriner", "dişçi", "psikolog",
-    "sosyolog", "filozof", "tarihçi", "coğrafyacı", "matematikçi", "fizikçi", "kimyager", "biyolog", "astronom", "arkeolog",
-    "antropolog", "ekonomist", "siyasetçi", "diplomat", "bakan", "başkan", "kral", "kraliçe", "prens", "prenses",
-    "imparator", "imparatoriçe", "sultan", "halife", "papa", "rahip", "imam", "hoca", "şeyh", "derviş",
-    "budist", "hindu", "yahudi", "hristiyan", "müslüman", "ateist", "deist", "agnostik", "spiritüalist", "mistik",
-    "yoga", "meditasyon", "namaz", "oruç", "hac", "zekat", "sadaka", "dua", "ibadet", "tapınak",
-    "cami", "kilise", "sinagog", "manastır", "türbe", "mezarlık", "kabir", "anıt", "heykel", "müze",
-    "galeri", "kütüphane", "okul", "üniversite", "hastane", "klinik", "eczane", "banka", "postane", "otel",
-    "restoran", "kafe", "bar", "disko", "sinema", "tiyatro", "konser", "stadyum", "spor", "salonu",
-    "havuz", "plaj", "piknik", "alanı", "kamp", "alanı", "orman", "parkı", "hayvanat", "bahçesi",
-    "akvaryum", "lunapark", "alışveriş", "merkezi", "çarşı", "pazar", "market", "bakkal", "kasap", "manav",
-    "fırın", "pastane", "kuruyemişçi", "aktar", "eczane", "optik", "saatçi", "kuyumcu", "terzi", "kuru",
-    "temizlemeci", "ayakkabıcı", "tamirci", "oto", "servis", "benzin", "istasyonu", "otogar", "havalimanı", "liman",
-    "tren", "garı", "metro", "istasyonu", "tramvay", "durağı", "otobüs", "durağı", "taksi", "durağı",
-    "vapur", "iskelesi", "köprü", "tünel", "viyadük", "baraj", "gölet", "kanal", "kuyu", "çeşme",
-    "şelale", "volkan", "deprem", "tsunami", "sel", "yangın", "fırtına", "kasırga", "hortum", "çığ",
-    "heyelan", "erozyon", "kuraklık", "salgın", "hastalık", "kaza", "felaket", "savaş", "barış", "özgürlük",
-    "adalet", "eşitlik", "demokrasi", "cumhuriyet", "monarşi", "diktatörlük", "sosyalizm", "kapitalizm", "komünizm", "faşizm",
-    "milliyetçilik", "ırkçılık", "feminizm", "çevrecilik", "veganizm", "vejetaryenlik", "sağlık", "hastalık", "ilaç", "tedavi",
-    "ameliyat", "aşı", "vitamin", "mineral", "protein", "karbonhidrat", "yağ", "şeker", "tuz", "su",
-    "yemek", "içecek", "kahvaltı", "öğle", "yemeği", "akşam", "yemeği", "tatlı", "meyve", "sebze",
-    "et", "tavuk", "balık", "süt", "peynir", "yoğurt", "ekmek", "pilav", "makarna", "çorba",
-    "salata", "zeytin", "bal", "reçel", "tereyağı", "yumurta", "baharat", "sos", "turşu", "cips",
-    "çikolata", "şekerleme", "dondurma", "pasta", "kurabiye", "kek", "bisküvi", "gofret", "kraker", "simit",
-    "poğaça", "börek", "pide", "lahmacun", "döner", "köfte", "kebap", "pizza", "hamburger", "sandviç"
+    "harddisk", "usb", "bellek", "pil", "şarj", "adaptör", "kablo", "priz", "ampul", "led",
+    "fener", "mum", "kibrit", "çakmak", "gazete", "dergi", "roman", "hikaye", "şiir", "mektup",
+    "zarf", "pul", "fotoğraf", "resim", "tablo", "heykel", "vazo", "çiçek", "bitki", "saksı",
+    "su", "hava", "güneş", "ay", "yıldız", "bulut", "yağmur", "kar", "rüzgar", "şimşek",
+    "deniz", "göl", "nehir", "dağ", "orman", "ağaç", "yaprak", "çimen", "taş", "kaya",
+    "kum", "toprak", "yol", "cadde", "sokak", "meydan", "park", "bahçe", "tarla", "köy",
+    "şehir", "ülke", "dünya", "insan", "kadın", "erkek", "çocuk", "bebek", "aile", "anne",
+    "baba", "kardeş", "dede", "nine", "arkadaş", "komşu", "öğrenci", "öğretmen", "doktor", "hemşire",
+    "mühendis", "mimar", "işçi", "sanatçı", "sporcu", "şarkıcı", "oyuncu", "yazar", "gazeteci", "polis",
+    "asker", "pilot", "kaptan", "aşçı", "garson", "berber", "terzi", "tamirci", "bahçıvan", "balıkçı",
+    "avukat", "hakim", "eczacı", "veteriner", "dişçi", "psikolog", "ekonomist", "diplomat", "bakan", "başkan",
+    "yoga", "meditasyon", "namaz", "oruç", "dua", "ibadet", "cami", "kilise", "müze", "galeri",
+    "kütüphane", "okul", "üniversite", "hastane", "eczane", "banka", "otel", "restoran", "kafe", "sinema",
+    "tiyatro", "stadyum", "havuz", "plaj", "pazar", "market", "bakkal", "kasap", "manav", "fırın",
+    "köprü", "tünel", "baraj", "kanal", "şelale", "volkan", "sel", "yangın", "fırtına", "kasırga",
+    "savaş", "barış", "özgürlük", "adalet", "demokrasi", "cumhuriyet", "sağlık", "hastalık", "ilaç", "tedavi",
+    "ameliyat", "aşı", "vitamin", "protein", "yağ", "şeker", "tuz", "yemek", "içecek", "kahvaltı",
+    "tatlı", "meyve", "sebze", "et", "tavuk", "balık", "süt", "peynir", "yoğurt", "ekmek",
+    "pilav", "makarna", "çorba", "salata", "zeytin", "bal", "reçel", "yumurta", "baharat", "turşu",
+    "çikolata", "dondurma", "pasta", "kurabiye", "kek", "bisküvi", "simit", "poğaça", "börek", "pide",
+    "lahmacun", "döner", "köfte", "kebap", "pizza", "hamburger", "sandviç"
 ];
 
 var aktifKelime = [];
@@ -73,7 +57,7 @@ function oyunuBaslat() {
     startScreen.style.display = "none";
     İnputAlani.focus();
     generateRandomWord();
-    kelimeinterval = setInterval(generateRandomWord, 3000);
+    kelimeinterval = setInterval(generateRandomWord, spawnHizi);
     hareketinterval = setInterval(hareket, 30);
 }
 
@@ -84,28 +68,26 @@ window.addEventListener("keydown", function (e) {
 });
 
 function generateRandomWord() {
-    var randomSayi = getRandomNumber(0, words.length) - 1;
+    var randomSayi = getRandomNumber(0, words.length - 1);
     var secilenkelime = words[randomSayi];
-    const yeniDiv = document.createElement("div");
+    var yeniDiv = document.createElement("div");
     yeniDiv.classList.add("kelime");
     yeniDiv.style.left = getRandomNumber(0, 500) + "px";
     yeniDiv.style.top = "0px";
     yeniDiv.dataset.kelime = secilenkelime;
 
-    if (Math.random() < 0.2) {
+    var oran = Math.random();
+    if (oran < 0.2) {
         yeniDiv.classList.add("bomba");
         yeniDiv.innerText = "💣 " + secilenkelime;
-    } 
-    else if (Math.random() < 0.1) {
+    } else if (oran < 0.3) {
         yeniDiv.classList.add("bonus");
         yeniDiv.innerText = "⭐ " + secilenkelime;
-    }
-    else {
+    } else {
         yeniDiv.innerText = secilenkelime;
     }
 
-    var gameBoard = document.getElementById("game-board");
-    gameBoard.appendChild(yeniDiv);
+    document.getElementById("game-board").appendChild(yeniDiv);
     aktifKelime.push(yeniDiv);
 }
 
@@ -141,12 +123,17 @@ function oyunBitti() {
 }
 
 function hareket() {
-    aktifKelime.forEach(function (yeniDiv, index) {
+    var silinecekler = [];
+
+    for (var i = 0; i < aktifKelime.length; i++) {
+        var yeniDiv = aktifKelime[i];
         var asilYükseklik = parseInt(yeniDiv.style.top) || 0;
-        asilYükseklik = asilYükseklik + fallspeed;
+        asilYükseklik += fallspeed;
         yeniDiv.style.top = asilYükseklik + "px";
 
         if (asilYükseklik > 580) {
+            silinecekler.push(i);
+
             if (!yeniDiv.classList.contains("bomba")) {
                 lives -= 1;
                 cankismi();
@@ -157,34 +144,45 @@ function hareket() {
                 kombo = 0;
                 document.getElementById("current-combo").innerText = kombo;
 
-                var gameBoard = document.getElementById("game-board");
-                gameBoard.classList.add("shake");
+                document.getElementById("game-board").classList.add("shake");
                 setTimeout(function () {
-                    gameBoard.classList.remove("shake");
+                    document.getElementById("game-board").classList.remove("shake");
                 }, 400);
 
-                var düsses = new Audio('sounds/fallsound.mp3');
-                playSes(düsses);
-
-                İnputAlani.value = "";
+                playSes(new Audio('sounds/fallsound.mp3'));
 
                 if (lives <= 0) {
                     oyunBitti();
+                    return;
                 }
             }
 
+            var yazilanSuAn = İnputAlani.value.trim();
+            if (yazilanSuAn !== "") {
+                var halaVarMi = false;
+                for (var k = 0; k < aktifKelime.length; k++) {
+                    if (aktifKelime[k] !== yeniDiv && aktifKelime[k].dataset.kelime.startsWith(yazilanSuAn)) {
+                        halaVarMi = true;
+                        break;
+                    }
+                }
+                if (!halaVarMi) İnputAlani.value = "";
+            }
+
             yeniDiv.remove();
-            aktifKelime.splice(index, 1);
-            İnputAlani.value = "";
         }
-    });
+    }
+
+    for (var j = silinecekler.length - 1; j >= 0; j--) {
+        aktifKelime.splice(silinecekler[j], 1);
+    }
 }
 
 İnputAlani.addEventListener("input", function () {
     var yazilanKelime = İnputAlani.value.trim();
 
     for (var i = 0; i < aktifKelime.length; i++) {
-        var kontrolKelime = aktifKelime[i].dataset.kelime || aktifKelime[i].innerText;
+        var kontrolKelime = aktifKelime[i].dataset.kelime;
 
         if (kontrolKelime === yazilanKelime) {
             var rect = aktifKelime[i].getBoundingClientRect();
@@ -209,29 +207,29 @@ function hareket() {
                 document.getElementById("current-score").innerText = scores;
                 komboMesajiGoster("💣 BOMBA PATLADI! -20 PUAN!");
 
-                var gameBoard = document.getElementById("game-board");
-                gameBoard.classList.add("shake");
-                setTimeout(function () { gameBoard.classList.remove("shake"); }, 400);
+                document.getElementById("game-board").classList.add("shake");
+                setTimeout(function () {
+                    document.getElementById("game-board").classList.remove("shake");
+                }, 400);
 
                 if (lives <= 0) oyunBitti();
                 break;
             }
 
             if (altinMi) {
-                scores += 50;
-                lives += 1;
-                cankismi();
-                kombo = 0;
-                document.getElementById("current-combo").innerText = kombo;
-                document.getElementById("current-score").innerText = scores;
-                komboMesajiGoster("⭐ BONUS! +50 PUAN!");
+                if (lives < maxCan) {
+                    lives += 1;
+                    cankismi();
+                    komboMesajiGoster("⭐ ALTIN KELİME! +1 CAN!");
+                } else {
+                    scores += 50;
+                    document.getElementById("current-score").innerText = scores;
+                    komboMesajiGoster("⭐ ALTIN KELİME! +50 PUAN!");
+                }
                 var bonusAudio = document.getElementById("bonus");
-                playSes(bonusAudio);
+                if (bonusAudio) playSes(bonusAudio);
                 break;
             }
-
-
-            
 
             var kombocarpan = 1;
             if (kombo >= 5) kombocarpan = 2;
@@ -248,10 +246,16 @@ function hareket() {
             if (kombo > maxCombo) maxCombo = kombo;
             document.getElementById("current-score").innerText = scores;
 
-            var vurmeefekti = document.getElementById("shoot");
-            playSes(vurmeefekti);
+            playSes(document.getElementById("shoot"));
 
-            if (scores % 50 === 0) fallspeed += 2;
+            if (scores - sonHizArtisi >= 50) {
+                fallspeed += 1;
+                spawnHizi = Math.max(800, spawnHizi - 300);
+                clearInterval(kelimeinterval);
+                kelimeinterval = setInterval(generateRandomWord, spawnHizi);
+                sonHizArtisi = scores;
+                komboMesajiGoster("⚡ HIZ ARTTI!");
+            }
 
             break;
         }
@@ -300,7 +304,7 @@ soundToggle.addEventListener("click", function () {
 function playSes(audioEl) {
     if (!soundEnabled) return;
     audioEl.currentTime = 0;
-    audioEl.play().catch(e => console.log("ses hatası:", e));
+    audioEl.play().catch(function (e) { console.log("ses hatası:", e); });
 }
 
 function particleEfekti(x, y) {
