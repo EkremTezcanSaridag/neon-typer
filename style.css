@@ -604,3 +604,9 @@ body {
     from { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
     to   { transform: translate(-50%, -50%) scale(1); opacity: 1; }
 }
+
+
+.yazilan {
+    color: #00ff88;
+    text-shadow: 0 0 8px #00ff88;
+}

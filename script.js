@@ -66,7 +66,7 @@ function oyunuBaslat() {
         if (sayac > 0) {
             countdownSayi.innerText = sayac;
             countdownDiv.classList.remove("countdown-animate");
-            void countdownDiv.offsetWidth; // reflow trick
+            void countdownDiv.offsetWidth;
             countdownDiv.classList.add("countdown-animate");
         } else {
             countdownDiv.style.display = "none";
@@ -196,8 +196,35 @@ function hareket() {
     }
 }
 
+function kelimeRenkGuncelle(yazilanKelime) {
+    aktifKelime.forEach(function (div) {
+        var kelime = div.dataset.kelime;
+        if (yazilanKelime.length > 0 && kelime.startsWith(yazilanKelime)) {
+            var yesil = '<span class="yazilan">' + kelime.slice(0, yazilanKelime.length) + '</span>';
+            var kalan = kelime.slice(yazilanKelime.length);
+            if (div.classList.contains("bomba")) {
+                div.innerHTML = "💣 " + yesil + kalan;
+            } else if (div.classList.contains("bonus")) {
+                div.innerHTML = "⭐ " + yesil + kalan;
+            } else {
+                div.innerHTML = yesil + kalan;
+            }
+        } else {
+            if (div.classList.contains("bomba")) {
+                div.innerText = "💣 " + kelime;
+            } else if (div.classList.contains("bonus")) {
+                div.innerText = "⭐ " + kelime;
+            } else {
+                div.innerText = kelime;
+            }
+        }
+    });
+}
+
 İnputAlani.addEventListener("input", function () {
     var yazilanKelime = İnputAlani.value.trim();
+
+    kelimeRenkGuncelle(yazilanKelime);
 
     for (var i = 0; i < aktifKelime.length; i++) {
         var kontrolKelime = aktifKelime[i].dataset.kelime;
@@ -215,6 +242,7 @@ function hareket() {
             aktifKelime[i].remove();
             aktifKelime.splice(i, 1);
             İnputAlani.value = "";
+            kelimeRenkGuncelle("");
 
             if (bombaMi) {
                 lives -= 1;
@@ -357,5 +385,3 @@ function komboMesajiGoster(mesaj) {
         div.remove();
     }, 1500);
 }
-
-console.log("Neon Typer - Script yüklendi.");
