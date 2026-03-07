@@ -95,7 +95,12 @@ function generateRandomWord() {
     if (Math.random() < 0.2) {
         yeniDiv.classList.add("bomba");
         yeniDiv.innerText = "💣 " + secilenkelime;
-    } else {
+    } 
+    else if (Math.random() < 0.1) {
+        yeniDiv.classList.add("bonus");
+        yeniDiv.innerText = "⭐ " + secilenkelime;
+    }
+    else {
         yeniDiv.innerText = secilenkelime;
     }
 
@@ -188,6 +193,7 @@ function hareket() {
             var y = rect.top - boardRect.top + rect.height / 2;
 
             var bombaMi = aktifKelime[i].classList.contains("bomba");
+            var altinMi = aktifKelime[i].classList.contains("bonus");
 
             particleEfekti(x, y);
             aktifKelime[i].remove();
@@ -210,6 +216,22 @@ function hareket() {
                 if (lives <= 0) oyunBitti();
                 break;
             }
+
+            if (altinMi) {
+                scores += 50;
+                lives += 1;
+                cankismi();
+                kombo = 0;
+                document.getElementById("current-combo").innerText = kombo;
+                document.getElementById("current-score").innerText = scores;
+                komboMesajiGoster("⭐ BONUS! +50 PUAN!");
+                var bonusAudio = document.getElementById("bonus");
+                playSes(bonusAudio);
+                break;
+            }
+
+
+            
 
             var kombocarpan = 1;
             if (kombo >= 5) kombocarpan = 2;
