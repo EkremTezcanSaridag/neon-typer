@@ -331,11 +331,13 @@ document.addEventListener("click", function (e) {
     }
 });
 
-diffBtns.forEach(function (btn) {
+var zorlukBtns = document.querySelectorAll(".zorluk-btn");
+zorlukBtns.forEach(function (btn) {
     btn.addEventListener("click", function () {
-        diffBtns.forEach(function (b) { b.classList.remove("active"); });
+        zorlukBtns.forEach(function (b) { b.classList.remove("active"); });
         btn.classList.add("active");
         fallspeed = parseInt(btn.dataset.speed);
+        spawnHizi = parseInt(btn.dataset.spawn);
     });
 });
 

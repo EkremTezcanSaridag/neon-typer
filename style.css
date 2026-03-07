@@ -330,31 +330,6 @@ body {
     letter-spacing: 2px;
 }
 
-.farklizorluk {
-    display: flex;
-    justify-content: space-evenly;
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
-
-.farklibut {
-    background: transparent;
-    border: 1px solid var(--neon-blue);
-    color: var(--neon-blue);
-    font-family: 'VT323', monospace;
-    font-size: 16px;
-    padding: 4px 10px;
-    cursor: pointer;
-    border-radius: 6px;
-    transition: 0.2s;
-    letter-spacing: 1px;
-}
-
-.farklibut:hover {
-    background: var(--neon-blue);
-    color: black;
-    box-shadow: 0 0 20px var(--neon-blue);
-}
 
 .farklibut:active {
     background: var(--neon-blue);
@@ -609,4 +584,34 @@ body {
 .yazilan {
     color: #00ff88;
     text-shadow: 0 0 8px #00ff88;
+}
+
+
+
+
+.zorluk-secim {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.zorluk-btn {
+    padding: 8px 20px;
+    border: 2px solid var(--neon-blue);
+    background: transparent;
+    color: var(--neon-blue);
+    font-family: inherit;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.zorluk-btn.active {
+    background: var(--neon-blue);
+    color: #000;
+}
+
+.zorluk-btn:hover {
+    opacity: 0.8;
 }
