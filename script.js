@@ -7,6 +7,10 @@ var sonHizArtisi = 0;
 var spawnHizi = 3000;
 var maxCan = 5;
 
+var secilenmod = "klasik";
+
+
+
 var words = [
     "ev", "elma", "evet", "araba", "masa", "kitap", "kalem", "defter", "bilgisayar", "telefon",
     "bardak", "sandalye", "kapı", "pencere", "oda", "mutfak", "banyo", "yatak", "koltuk", "sehpa",
@@ -387,3 +391,40 @@ function komboMesajiGoster(mesaj) {
         div.remove();
     }, 1500);
 }
+
+var modBtnlari = document.querySelectorAll(".klasik, .hizmodu");
+
+modBtnlari.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+        modBtnlari.forEach(function (b) { b.classList.remove("active"); });
+        btn.classList.add("active");
+
+        if (btn.classList.contains("klasik")) {
+            secilenmod = "klasik";
+            document.querySelector(".suresecim").style.display = "none";
+        } else {
+            secilenmod = "hizli";
+            document.querySelector(".suresecim").style.display = "flex";
+        }
+    });
+});
+
+
+var suresecimleri = document.querySelectorAll(".sure-btn");
+suresecimleri.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+        modBtnlari.forEach(function (b) { b.classList.remove("active"); });
+        btn.classList.add("active");
+    });
+});
+
+var sureBtnlari = document.querySelectorAll(".sure-btn");
+var sureSecimi = 30;
+
+sureBtnlari.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+        sureBtnlari.forEach(function (b) { b.classList.remove("active"); });
+        btn.classList.add("active");
+        sureSecimi = parseInt(btn.dataset.sure);
+    });
+});
