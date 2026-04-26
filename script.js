@@ -94,7 +94,14 @@ function oyunuBaslat() {
 
 
 
-    function hiztestibaslat() {
+    
+
+
+}
+
+
+
+function hiztestibaslat() {
         document.getElementById("sure-goster-wrapper").style.display = "block";
         generateRandomWord();
         kelimeinterval = setInterval(generateRandomWord, spawnHizi);
@@ -116,9 +123,6 @@ function oyunuBaslat() {
 
         }, 1000);
     }
-
-
-}
 
 window.addEventListener("keydown", function (e) {
     if (e.key === "Enter" && startScreen.style.display !== "none") {
