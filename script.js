@@ -11,6 +11,9 @@ var secilenmod = "klasik";
 var sureSecimi = 30;
 
 
+var toplamKelime = 0;
+var oyunBaslangicZamani = 0;
+
 
 var words = [
     "ev", "elma", "evet", "araba", "masa", "kitap", "kalem", "defter", "bilgisayar", "telefon",
@@ -77,6 +80,7 @@ function oyunuBaslat() {
             countdownDiv.style.display = "none";
             clearInterval(countdownInterval);
             İnputAlani.focus();
+            oyunBaslangicZamani = Date.now();
 
 
             if (secilenmod === "klasik") {
@@ -94,7 +98,7 @@ function oyunuBaslat() {
 
 
 
-    
+
 
 
 }
@@ -102,27 +106,27 @@ function oyunuBaslat() {
 
 
 function hiztestibaslat() {
-        document.getElementById("sure-goster-wrapper").style.display = "block";
-        generateRandomWord();
-        kelimeinterval = setInterval(generateRandomWord, spawnHizi);
-        hareketinterval = setInterval(hareket, 30);
-        var kalansure = sureSecimi;
-         document.getElementById("sure-goster").innerText = "Kalan Süre: " + kalansure + "s";
+    document.getElementById("sure-goster-wrapper").style.display = "block";
+    generateRandomWord();
+    kelimeinterval = setInterval(generateRandomWord, spawnHizi);
+    hareketinterval = setInterval(hareket, 30);
+    var kalansure = sureSecimi;
+    document.getElementById("sure-goster").innerText = "Kalan Süre: " + kalansure + "s";
 
-        var sureInterval = setInterval(function () {
-            kalansure -= 1;
-            document.getElementById("sure-goster").innerText = "Kalan Süre: " + kalansure + "s";
+    var sureInterval = setInterval(function () {
+        kalansure -= 1;
+        document.getElementById("sure-goster").innerText = "Kalan Süre: " + kalansure + "s";
 
-            if (kalansure <= 0) {
-                clearInterval(sureInterval);
-                clearInterval(kelimeinterval);
-                oyunBitti();
+        if (kalansure <= 0) {
+            clearInterval(sureInterval);
+            clearInterval(kelimeinterval);
+            oyunBitti();
 
-            }
+        }
 
 
-        }, 1000);
-    }
+    }, 1000);
+}
 
 window.addEventListener("keydown", function (e) {
     if (e.key === "Enter" && startScreen.style.display !== "none") {
@@ -170,6 +174,12 @@ cankismi();
 function oyunBitti() {
     clearInterval(kelimeinterval);
     clearInterval(hareketinterval);
+
+    var gecendk = (Date.now() - oyunBaslangicZamani) / 60000;
+    var wpm = Math.round(toplamKelime / gecendk);
+    document.getElementById("final-kelime").innerText = toplamKelime;
+    document.getElementById("final-kombo").innerText = maxCombo;
+    document.getElementById("final-wpm").innerText = wpm;
 
     var gameoverAudio = document.getElementById("gameover");
     if (gameoverAudio) playSes(gameoverAudio);
@@ -327,6 +337,7 @@ function kelimeRenkGuncelle(yazilanKelime) {
             else if (kombo >= 3) kombocarpan = 1.5;
 
             kombo += 1;
+            toplamKelime += 1;
 
             if (kombo === 3) komboMesajiGoster("🔥 KOMBO x3!");
             else if (kombo === 5) komboMesajiGoster("⚡ KOMBO x5! 2X PUAN!");
