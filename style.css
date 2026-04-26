@@ -219,6 +219,21 @@ body {
     overflow: hidden;
 }
 
+.sure-display {
+    color: #00ffff;
+    text-shadow: 0 0 5px #00ffff;
+    font-size: 20px;
+    position: relative;
+}
+
+#sure-goster-wrapper {
+    position: absolute;
+
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 300;
+}
+
 .klasik::before, .hizmodu::before {
     content: "";
     position: absolute;

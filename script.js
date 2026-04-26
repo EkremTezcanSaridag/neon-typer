@@ -8,6 +8,7 @@ var spawnHizi = 3000;
 var maxCan = 5;
 
 var secilenmod = "klasik";
+var sureSecimi = 30;
 
 
 
@@ -76,11 +77,47 @@ function oyunuBaslat() {
             countdownDiv.style.display = "none";
             clearInterval(countdownInterval);
             İnputAlani.focus();
-            generateRandomWord();
-            kelimeinterval = setInterval(generateRandomWord, spawnHizi);
-            hareketinterval = setInterval(hareket, 30);
+
+
+            if (secilenmod === "klasik") {
+                generateRandomWord();
+                kelimeinterval = setInterval(generateRandomWord, spawnHizi);
+                hareketinterval = setInterval(hareket, 30);
+
+            }
+            else if (secilenmod === "hizli") {
+                hiztestibaslat();
+            }
+
         }
     }, 1000);
+
+
+
+    function hiztestibaslat() {
+        document.getElementById("sure-goster-wrapper").style.display = "block";
+        generateRandomWord();
+        kelimeinterval = setInterval(generateRandomWord, spawnHizi);
+        hareketinterval = setInterval(hareket, 30);
+        var kalansure = sureSecimi;
+         document.getElementById("sure-goster").innerText = "Kalan Süre: " + kalansure + "s";
+
+        var sureInterval = setInterval(function () {
+            kalansure -= 1;
+            document.getElementById("sure-goster").innerText = "Kalan Süre: " + kalansure + "s";
+
+            if (kalansure <= 0) {
+                clearInterval(sureInterval);
+                clearInterval(kelimeinterval);
+                oyunBitti();
+
+            }
+
+
+        }, 1000);
+    }
+
+
 }
 
 window.addEventListener("keydown", function (e) {
@@ -410,16 +447,9 @@ modBtnlari.forEach(function (btn) {
 });
 
 
-var suresecimleri = document.querySelectorAll(".sure-btn");
-suresecimleri.forEach(function (btn) {
-    btn.addEventListener("click", function () {
-        modBtnlari.forEach(function (b) { b.classList.remove("active"); });
-        btn.classList.add("active");
-    });
-});
 
 var sureBtnlari = document.querySelectorAll(".sure-btn");
-var sureSecimi = 30;
+
 
 sureBtnlari.forEach(function (btn) {
     btn.addEventListener("click", function () {
