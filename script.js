@@ -14,6 +14,8 @@ var sureSecimi = 30;
 var toplamKelime = 0;
 var oyunBaslangicZamani = 0;
 
+var rekorOlduMU = false;
+
 
 var words = [
     "ev", "elma", "evet", "araba", "masa", "kitap", "kalem", "defter", "bilgisayar", "telefon",
@@ -61,6 +63,7 @@ function getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+/*oyunu başlat fonksiyonu*/
 function oyunuBaslat() {
     startScreen.style.display = "none";
     var sayac = 3;
@@ -184,6 +187,16 @@ function oyunBitti() {
     var gameoverAudio = document.getElementById("gameover");
     if (gameoverAudio) playSes(gameoverAudio);
 
+    var rekorAnahtar = "klasik"
+    var guncelRekor = localStorage.getItem("");
+
+
+    if (!guncelRekor || scores > parseInt(guncelRekor)) {
+    localStorage.setItem(rekorAnahtar, scores);
+    yeniRekorMu = true;
+    } else {
+    yeniRekorMu = false;
+    }
     setTimeout(function () {
         var gameoverScreen = document.querySelector(".gameoverscreen");
         gameoverScreen.style.display = "flex";
