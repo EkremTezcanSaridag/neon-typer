@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Neon Typer - Neon temalı refleks ve klavye hızı oyunu">
     <title>Neon Typer</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -12,37 +13,25 @@
 
 <body>
 
-
     <div class="wrapper">
         <div class="status">
-            <div>
-                <p class="score">Skor: <span id="current-score">0</span></p>
-            </div>
-            <div>
-                <p class="lives">Can:
-                <div id="can">3</div>
-                </p>
-
-            </div>
-
-            <div>
-                <p class="combo">Kombo: <span id="current-combo">0</span></p>
-            </div>
+            <p class="score">Skor: <span id="current-score">0</span></p>
+            <p class="lives">Can: <span id="can"></span></p>
+            <p class="combo">Kombo: <span id="current-combo">0</span></p>
+            <p class="kalkanStat">Kalkan: <span id="kalkan-sayi">0</span></p>
         </div>
-
-
-
 
         <div id="game-board">
 
             <div id="sure-goster-wrapper" style="display:none;">
-                <p class="sure-display">Süre: <span id="sure-goster">0</span>sn</p>
+                <p class="sure-display">Kalan Süre: <span id="sure-goster">0</span></p>
             </div>
+
             <div id="start-screen">
                 <h1>NEON TYPER</h1>
                 <p>başlamak için butona basınız !</p>
 
-                <button class="klasik">Klasik Mod</button>
+                <button class="klasik active">Klasik Mod</button>
                 <button class="hizmodu">Hız Modu</button>
 
                 <div class="suresecim">
@@ -51,9 +40,7 @@
                     <button class="sure-btn" data-sure="120">2 DK</button>
                 </div>
 
-
                 <button id="start-btn">OYUNA BAŞLA</button>
-
 
                 <div class="zorluk-secim">
                     <button class="zorluk-btn active" data-speed="2" data-spawn="3000">KOLAY</button>
@@ -61,39 +48,55 @@
                     <button class="zorluk-btn" data-speed="7" data-spawn="1200">ZOR</button>
                 </div>
 
+                <div class="rekor-gosterim">
+                    <span>🏁 Klasik: <b id="rekor-klasik">0</b></span>
+                    <span>⏱️ Hız: <b id="rekor-hiz">0</b></span>
+                </div>
+
+                <button id="rekorlar-btn">🏆 REKORLAR</button>
+                <div id="rekor-listesi" style="display:none;"></div>
             </div>
 
             <div class="gameoverscreen">
+                <div id="yeni-rekor">🏆 YENİ REKOR!</div>
                 <h1>OYUN BİTTİ</h1>
-                <p>Final Skorunuz : <span id="final-score">0</span></p>
-                <button id="restart-btn">YENİDEN BAŞLA</button>
-                <p>Toplam Kelime: <span id="final-kelime">0</span></p>
-                <p>Max Kombo: <span id="final-kombo">0</span></p>
-                <p>WPM: <span id="final-wpm">0</span></p>
-            </div>
+                <p>Final Skorunuz: <span id="final-score">0</span></p>
 
+                <div class="istatistikler">
+                    <p>Toplam Kelime: <span id="final-kelime">0</span></p>
+                    <p>Max Kombo: <span id="final-kombo">0</span></p>
+                    <p>WPM: <span id="final-wpm">0</span></p>
+                    <p>Doğruluk: <span id="final-dogruluk">%100</span></p>
+                </div>
+
+                <div class="gameover-buttons">
+                    <button id="restart-btn">TEKRAR OYNA</button>
+                    <button id="menu-btn">ANA MENÜ</button>
+                </div>
+            </div>
 
             <div id="countdown" style="display:none;">
                 <span id="countdown-sayi"></span>
             </div>
 
+            <div id="pause-screen" style="display:none;">
+                <h2>⏸ DURAKLATILDI</h2>
+                <p>Devam etmek için <b>ESC</b> tuşuna bas</p>
+            </div>
+
         </div>
 
         <div>
-            <input type="text" id="input-area" autofocus placeholder="...">
+            <input type="text" id="input-area" autofocus placeholder="kelimeyi yaz...">
         </div>
     </div>
 
     <div id="settings">
-
         <i class="fa-solid fa-gears"></i>
-
     </div>
-
 
     <div class="settingspanel">
         <h2>AYARLAR</h2>
-
 
         <div class="settingrow">
             <span>SES :</span>
@@ -101,15 +104,18 @@
                 <i class="fa-solid fa-volume-high"></i>
             </button>
         </div>
+
+        <div class="settingrow">
+            <span>DURAKLAT :</span>
+            <span class="key-hint">ESC</span>
+        </div>
     </div>
 
     <script src="script.js"></script>
 
-
     <audio src="sounds/shoot.mp3" id="shoot"></audio>
     <audio src="sounds/gameover.mp3" id="gameover"></audio>
     <audio src="sounds/bonus.mp3" id="bonus"></audio>
-
 
 </body>
 
